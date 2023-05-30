@@ -51,6 +51,7 @@ class Isikukood:
 
     @dispatch(int)
     def construct(self, ordernumber: int) -> str:
+        isikukood.assertions.assert_ordernumber_range(ordernumber)
         ssn = self._gen_ssn(ordernumber)
 
         isikukood.assertions.assert_constructor_list([ssn])
@@ -61,6 +62,7 @@ class Isikukood:
     def construct(self, ordernumbers: List[int]) -> List[str]:
         ret = []
         for onum in ordernumbers:
+            isikukood.assertions.assert_ordernumber_range(onum)
             ret.append(self._gen_ssn(onum))
 
         isikukood.assertions.assert_constructor_list(ret)

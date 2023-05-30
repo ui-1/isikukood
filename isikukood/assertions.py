@@ -5,6 +5,13 @@ import isikukood.functions
 import isikukood.errors
 
 
+def assert_ordernumber_range(ordernumber: int) -> None:
+    try:
+        assert ordernumber in range(0, 999 + 1)
+    except AssertionError:
+        raise ValueError(f'Ordernumber was {ordernumber}, expected a value between 0 and 999 (incl.)')
+
+
 def assert_numeric(ssn: str) -> None:
     try:
         assert ssn.isnumeric()
@@ -63,7 +70,7 @@ def assert_constructor_list(ssns: List[str]) -> None:
 
         for ssn in ssns:
             isikukood.assertions.assert_valid_ssn(ssn)
-    except ValueError as e:
+    except (ValueError, AssertionError) as e:
         raise AssertionError(isikukood.errors.BUG_MSG + str(e))
 
 
@@ -87,12 +94,16 @@ def assert_valid_ssn(ssn: str) -> None:
     except AssertionError:
         raise ValueError(f'Given SSN ({ssn}) is {len(ssn)} digits, expected 11')
 
-    expected_checksum = isikukood.functions.calculate_checksum(ssn)
-    try:
-        assert int(ssn[-1]) == expected_checksum
-    except AssertionError:
-        raise ValueError(f'Given SSN\'s ({ssn}) checksum is not valid, expected {expected_checksum}')
+    assert_correct_checksum(ssn)
 
     birthdate = isikukood.functions.birthdate_from_ssn(ssn)
     assert_year_range(int(birthdate[:4]))
     assert_existing_date(birthdate)
+
+
+def assert_correct_checksum(ssn: str) -> None:
+    expected_checksum = isikukood.functions.calculate_checksum(ssn)
+    try:
+        assert str(expected_checksum) == ssn[10]
+    except AssertionError:
+        raise AssertionError(f'Invalid checksum for {ssn} - expected {expected_checksum}')
