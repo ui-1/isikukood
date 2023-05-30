@@ -1,5 +1,6 @@
 from isikukood.isikukood import Isikukood
 from isikukood.assertions import (
+    assert_ordernumber_range,
     assert_numeric,
     assert_gender,
     assert_first_digit,
@@ -7,6 +8,7 @@ from isikukood.assertions import (
     assert_existing_date,
     assert_constructor_list,
     assert_valid_ssn,
+    assert_correct_checksum,
 )
 from isikukood.functions import (
     ordernumber_from_ssn,
