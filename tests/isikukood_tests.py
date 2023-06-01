@@ -68,6 +68,23 @@ class AssertionsTestCase(unittest.TestCase):
 
         self.assertRaises(AssertionError, lambda: isikukood.assertions.assert_valid_ssn('50001010000'))
 
+    def test_assert_enum_arguments(self):
+        try:
+            isikukood.assertions.assert_enum_arguments(['m', 'f'], list(range(1, 31+1)), list(range(1, 12+1)), list(range(1800, 2199+1)))
+            isikukood.assertions.assert_enum_arguments(['m', 'f'], [1], [1], [1800])
+            isikukood.assertions.assert_enum_arguments(['m', 'f'], [31], [12], [2199])
+        except AssertionError as e:
+            self.fail(e)
+
+        self.assertRaises(AssertionError, lambda: isikukood.assertions.assert_enum_arguments([], [1], [1], [2000]))
+        self.assertRaises(AssertionError, lambda: isikukood.assertions.assert_enum_arguments(['m', 'f', 'x'], [1], [1], [2000]))
+        self.assertRaises(AssertionError, lambda: isikukood.assertions.assert_enum_arguments(['m', 'f'], [0], [1], [2000]))
+        self.assertRaises(AssertionError, lambda: isikukood.assertions.assert_enum_arguments(['m', 'f'], [32], [1], [2000]))
+        self.assertRaises(AssertionError, lambda: isikukood.assertions.assert_enum_arguments(['m', 'f'], [1], [0], [2000]))
+        self.assertRaises(AssertionError, lambda: isikukood.assertions.assert_enum_arguments(['m', 'f'], [1], [13], [2000]))
+        self.assertRaises(AssertionError, lambda: isikukood.assertions.assert_enum_arguments(['m', 'f'], [1], [1], [1799]))
+        self.assertRaises(AssertionError, lambda: isikukood.assertions.assert_enum_arguments(['m', 'f'], [1], [1], [2200]))
+
 
 class FunctionsTestCase(unittest.TestCase):
     def test_ordernumber_from_ssn(self):

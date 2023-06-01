@@ -1,5 +1,9 @@
+import datetime
+from typing import List
+
 import isikukood.assertions
 import isikukood.errors
+import isikukood.isikukood
 
 
 def ordernumber_from_ssn(ssn: str) -> int:
@@ -93,3 +97,52 @@ def calculate_checksum(ssn: str) -> int:
     j = k % 11
     if j < 10: return j
     else: return 0
+
+
+def enum(genders: List[str]=['m', 'f'],
+         days: List[int]=list(range(1, 31 + 1)),
+         months: List[int]=list(range(1, 12 + 1)),
+         years: List[int]=[datetime.datetime.now().year]) -> List[str]:
+
+    """
+    :param genders: Either ['m'], ['f'], or ['m', 'f']
+    :param days: Days of the month, such as [5, 6, 7, 8, 9]
+    :param months: Months of the year, such as [9, 10, 11, 12]
+    :param years: Years, such as [2000, 2001, 2002]
+    :return: List of all valid Estonian SSNs with the given arguments
+    """
+
+    genders = [g.lower() for g in genders]
+    genders.sort()
+    days.sort()
+    months.sort()
+    years.sort()
+
+    try: isikukood.assertions.assert_enum_arguments(genders, days, months, years)
+    except AssertionError as e: raise ValueError(e)
+
+    for lis in [days, months, years]:
+        for i in range(len(lis)):
+            if int(lis[i]) < 10: lis[i] = '0' + str(lis[i])  # 2 -> 02
+            else: lis[i] = str(lis[i])
+
+    dates = []
+    for year in years:
+        for month in months:
+            for day in days:
+                dates.append(f'{year}-{month}-{day}')
+
+    dates_pruned = []
+    for d in dates:
+        try: isikukood.assertions.assert_existing_date(d)
+        except AssertionError: continue
+        dates_pruned.append(d)
+
+    ssns = []
+    for g in genders:
+        for d in dates_pruned:
+            ssns.extend(isikukood.Isikukood(g, d).construct())
+    ssns.sort()
+    isikukood.assertions.assert_constructor_list(ssns)
+
+    return ssns

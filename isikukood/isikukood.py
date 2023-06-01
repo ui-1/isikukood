@@ -54,6 +54,16 @@ class Isikukood:
         base = gm + xxyy + mm + dd + "{0:03}".format(ordernumber)
         return base + str(isikukood.functions.calculate_checksum(base))
 
+    @dispatch()
+    def construct(self) -> List[str]:
+        ret = []
+        for i in range(999 + 1):
+            ret.append(self._gen_ssn(i))
+
+        isikukood.assertions.assert_constructor_list(ret)
+
+        return ret
+
     @dispatch(int)
     def construct(self, ordernumber: int) -> str:
         try: isikukood.assertions.assert_ordernumber_range(ordernumber)
@@ -72,16 +82,6 @@ class Isikukood:
             try: isikukood.assertions.assert_ordernumber_range(onum)
             except AssertionError as e: raise ValueError(e)
             ret.append(self._gen_ssn(onum))
-
-        isikukood.assertions.assert_constructor_list(ret)
-
-        return ret
-
-    @dispatch()
-    def construct(self) -> List[str]:
-        ret = []
-        for i in range(999 + 1):
-            ret.append(self._gen_ssn(i))
 
         isikukood.assertions.assert_constructor_list(ret)
 
