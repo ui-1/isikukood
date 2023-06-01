@@ -99,10 +99,7 @@ def calculate_checksum(ssn: str) -> int:
     else: return 0
 
 
-def enum(genders: List[str]=['m', 'f'],
-         days: List[int]=list(range(1, 31 + 1)),
-         months: List[int]=list(range(1, 12 + 1)),
-         years: List[int]=[datetime.datetime.now().year]) -> List[str]:
+def enum(genders: List[str]=None, days: List[int]=None, months: List[int]=None, years: List[int]=None) -> List[str]:
 
     """
     :param genders: Either ['m'], ['f'], or ['m', 'f']
@@ -112,11 +109,16 @@ def enum(genders: List[str]=['m', 'f'],
     :return: List of all valid Estonian SSNs with the given arguments
     """
 
+    if genders is None: genders = ['m', 'f']
+    if days is None: days = list(range(1, 31 + 1))
+    if months is None: months = list(range(1, 12 + 1))
+    if years is None: years = [datetime.datetime.now().year]
+
     genders = [g.lower() for g in genders]
-    genders.sort()
-    days.sort()
-    months.sort()
-    years.sort()
+    genders = sorted(list(set(genders)))
+    days = sorted(list(set(days)))
+    months = sorted(list(set(months)))
+    years = sorted(list(set(years)))
 
     try: isikukood.assertions.assert_enum_arguments(genders, days, months, years)
     except AssertionError as e: raise ValueError(e)
