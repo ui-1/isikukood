@@ -12,7 +12,8 @@ class Isikukood:
 
     @classmethod
     def from_ssn(cls, ssn: str):
-        isikukood.assertions.assert_valid_ssn(ssn)
+        try: isikukood.assertions.assert_valid_ssn(ssn)
+        except AssertionError as e: raise ValueError(e)
 
         gender = isikukood.functions.gender_from_ssn(ssn)
 
@@ -25,7 +26,8 @@ class Isikukood:
     @gender.setter
     def gender(self, new_gender: str):
         new_gender = new_gender.lower()
-        isikukood.assertions.assert_gender(new_gender)
+        try: isikukood.assertions.assert_gender(new_gender)
+        except AssertionError as e: raise ValueError(e)
         self._gender = new_gender
 
     @property
@@ -35,8 +37,11 @@ class Isikukood:
     @birthdate.setter
     def birthdate(self, new_birthdate: str):
         yyyy = int(new_birthdate[:4])
-        isikukood.assertions.assert_year_range(yyyy)
-        isikukood.assertions.assert_existing_date(new_birthdate)
+
+        try:
+            isikukood.assertions.assert_year_range(yyyy)
+            isikukood.assertions.assert_existing_date(new_birthdate)
+        except AssertionError as e: raise ValueError(e)
 
         self._birthdate = new_birthdate
 
@@ -51,7 +56,9 @@ class Isikukood:
 
     @dispatch(int)
     def construct(self, ordernumber: int) -> str:
-        isikukood.assertions.assert_ordernumber_range(ordernumber)
+        try: isikukood.assertions.assert_ordernumber_range(ordernumber)
+        except AssertionError as e: raise ValueError(e)
+
         ssn = self._gen_ssn(ordernumber)
 
         isikukood.assertions.assert_constructor_list([ssn])
@@ -62,7 +69,8 @@ class Isikukood:
     def construct(self, ordernumbers: List[int]) -> List[str]:
         ret = []
         for onum in ordernumbers:
-            isikukood.assertions.assert_ordernumber_range(onum)
+            try: isikukood.assertions.assert_ordernumber_range(onum)
+            except AssertionError as e: raise ValueError(e)
             ret.append(self._gen_ssn(onum))
 
         isikukood.assertions.assert_constructor_list(ret)
