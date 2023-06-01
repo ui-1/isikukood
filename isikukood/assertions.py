@@ -112,19 +112,10 @@ def assert_correct_checksum(ssn: str) -> None:
 
 
 def assert_enum_arguments(genders: List[str], days: List[int], months: List[int], years: List[int]) -> None:
-    for lis in [genders, days, months, years]:
-        try: assert len(lis) >= 1
-        except AssertionError: raise AssertionError('Arguments contain an empty list')
-
     try:
-        assert (len(genders) == 2 and genders[0] != genders[1]) or len(genders) == 1
         for g in genders: assert g == 'm' or g == 'f'
     except AssertionError:
         raise AssertionError(f'Genders must contain \'m\', \'f\', or both. Got {genders} instead.')
-
-    for lis in [days, months, years]:
-        try: assert len(lis) == len(set(lis))
-        except AssertionError: raise AssertionError(f'Argument {lis} contains duplicates!')
 
     for d in days:
         try:

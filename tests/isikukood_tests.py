@@ -76,7 +76,6 @@ class AssertionsTestCase(unittest.TestCase):
         except AssertionError as e:
             self.fail(e)
 
-        self.assertRaises(AssertionError, lambda: isikukood.assertions.assert_enum_arguments([], [1], [1], [2000]))
         self.assertRaises(AssertionError, lambda: isikukood.assertions.assert_enum_arguments(['m', 'f', 'x'], [1], [1], [2000]))
         self.assertRaises(AssertionError, lambda: isikukood.assertions.assert_enum_arguments(['m', 'f'], [0], [1], [2000]))
         self.assertRaises(AssertionError, lambda: isikukood.assertions.assert_enum_arguments(['m', 'f'], [32], [1], [2000]))
@@ -115,6 +114,14 @@ class FunctionsTestCase(unittest.TestCase):
 
     def test_insert_checksum(self):
         self.assertEqual(isikukood.functions.insert_checksum('5000101000x'), '50001010006')
+
+    def test_enum(self):
+        self.assertEqual(isikukood.functions.enum(genders=[]), [])
+        self.assertEqual(isikukood.functions.enum(years=[]), [])
+        self.assertEqual(isikukood.functions.enum(months=[]), [])
+        self.assertEqual(isikukood.functions.enum(days=[]), [])
+        self.assertEqual(isikukood.functions.enum(genders=['m'], days=[1], months=[2, 5, 4, 3, 4, 4, 6]),
+                         isikukood.functions.enum(genders=['m'], days=[1], months=[6, 4, 5, 3, 2]))
 
 
 class IsikukoodTestCase(unittest.TestCase):
