@@ -12,8 +12,10 @@ def gender_from_ssn(ssn: str) -> str:
 
 
 def gender_marker(yyyy: int, gender: str) -> str:
-    isikukood.assertions.assert_year_range(yyyy)
-    isikukood.assertions.assert_gender(gender)
+    try:
+        isikukood.assertions.assert_year_range(yyyy)
+        isikukood.assertions.assert_gender(gender)
+    except AssertionError as e: raise ValueError(e)
 
     if yyyy in range(1800, 1899 + 1):
         if gender == 'm': return '1'
@@ -34,8 +36,8 @@ def birthdate_from_ssn(ssn: str) -> str:
     :param ssn: Estonian SSN
     :return: Corresponding birthdate in ISO 8601 (yyyy-mm-dd)
     """
-
-    isikukood.assertions.assert_first_digit(ssn)
+    try: isikukood.assertions.assert_first_digit(ssn)
+    except AssertionError as e: raise ValueError(e)
 
     if ssn[0] in ['1', '2']: yy1 = '18'
     if ssn[0] in ['3', '4']: yy1 = '19'
@@ -47,7 +49,9 @@ def birthdate_from_ssn(ssn: str) -> str:
     dd = ssn[5:6 + 1]
 
     birthdate = f'{yy1}{yy2}-{mm}-{dd}'
-    isikukood.assertions.assert_existing_date(birthdate)
+
+    try: isikukood.assertions.assert_existing_date(birthdate)
+    except AssertionError as e: raise ValueError(e)
 
     return birthdate
 
@@ -65,12 +69,11 @@ def calculate_checksum(ssn: str) -> int:
     :return: Corresponding checksum
     """
 
-    isikukood.assertions.assert_numeric(ssn)
+    try: isikukood.assertions.assert_numeric(ssn)
+    except AssertionError as e: raise ValueError(e)
 
-    try:
-        assert len(ssn) in [10, 11]
-    except AssertionError:
-        raise ValueError(f'Given SSN ({ssn}) is {len(ssn)} digits, expected 10 or 11')
+    try: assert len(ssn) in [10, 11]
+    except AssertionError: raise ValueError(f'Given SSN ({ssn}) is {len(ssn)} digits, expected 10 or 11')
 
     k = 0
 
