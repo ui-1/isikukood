@@ -109,3 +109,34 @@ def assert_correct_checksum(ssn: str) -> None:
         assert str(expected_checksum) == ssn[10]
     except AssertionError:
         raise AssertionError(f'Invalid checksum for {ssn} - expected {expected_checksum}')
+
+
+def assert_enum_arguments(genders: List[str], days: List[int], months: List[int], years: List[int]) -> None:
+    for lis in [genders, days, months, years]:
+        try: assert len(lis) >= 1
+        except AssertionError: raise AssertionError('Arguments contain an empty list')
+
+    try:
+        assert (len(genders) == 2 and genders[0] != genders[1]) or len(genders) == 1
+        for g in genders: assert g == 'm' or g == 'f'
+    except AssertionError:
+        raise AssertionError(f'Genders must contain \'m\', \'f\', or both. Got {genders} instead.')
+
+    for lis in [days, months, years]:
+        try: assert len(lis) == len(set(lis))
+        except AssertionError: raise AssertionError(f'Argument {lis} contains duplicates!')
+
+    for d in days:
+        try:
+            assert d in range(1, 31 + 1)
+        except AssertionError:
+            raise AssertionError(f'Days must only contain values between 1 and 31 (incl.), found unexpected value {d}')
+
+    for m in months:
+        try:
+            assert m in range(1, 12 + 1)
+        except AssertionError:
+            raise AssertionError(f'Months must only contain values between 1 and 12 (incl.), found unexpected value {m}')
+
+    for y in years:
+        isikukood.assertions.assert_year_range(y)
