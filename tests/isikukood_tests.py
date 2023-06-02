@@ -122,6 +122,8 @@ class FunctionsTestCase(unittest.TestCase):
         self.assertEqual(isikukood.functions.enum(days=[]), [])
         self.assertEqual(isikukood.functions.enum(genders=['m'], days=[1], months=[2, 5, 4, 3, 4, 4, 6]),
                          isikukood.functions.enum(genders=['m'], days=[1], months=[6, 4, 5, 3, 2]))
+        self.assertEqual(len(isikukood.functions.enum(years=[2000])), 732000)
+        self.assertEqual(len(isikukood.functions.enum(years=[2001])), 730000)
 
 
 class IsikukoodTestCase(unittest.TestCase):

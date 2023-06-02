@@ -99,7 +99,7 @@ def calculate_checksum(ssn: str) -> int:
     else: return 0
 
 
-def enum(genders: List[str]=None, days: List[int]=None, months: List[int]=None, years: List[int]=None) -> List[str]:
+def enum(genders: List[str]=None, days: List[int]=None, months: List[int]=None, years: List[int]=None, onums: List[int]=None) -> List[str]:
 
     """
     :param genders: Either ['m'], ['f'], or ['m', 'f']
@@ -113,12 +113,14 @@ def enum(genders: List[str]=None, days: List[int]=None, months: List[int]=None, 
     if days is None: days = list(range(1, 31 + 1))
     if months is None: months = list(range(1, 12 + 1))
     if years is None: years = [datetime.datetime.now().year]
+    if onums is None: onums = list(range(0, 999 + 1))
 
     genders = [g.lower() for g in genders]
-    genders = sorted(list(set(genders)))
-    days = sorted(list(set(days)))
-    months = sorted(list(set(months)))
-    years = sorted(list(set(years)))
+    genders = list(set(genders))
+    days = list(set(days))
+    months = list(set(months))
+    years = list(set(years))
+    onums = list(set(onums))
 
     try: isikukood.assertions.assert_enum_arguments(genders, days, months, years)
     except AssertionError as e: raise ValueError(e)
@@ -135,15 +137,15 @@ def enum(genders: List[str]=None, days: List[int]=None, months: List[int]=None, 
                 dates.append(f'{year}-{month}-{day}')
 
     dates_pruned = []
-    for d in dates:
-        try: isikukood.assertions.assert_existing_date(d)
+    for date in dates:
+        try: isikukood.assertions.assert_existing_date(date)
         except AssertionError: continue
-        dates_pruned.append(d)
+        dates_pruned.append(date)
 
     ssns = []
-    for g in genders:
-        for d in dates_pruned:
-            ssns.extend(isikukood.Isikukood(g, d).construct())
+    for gender in genders:
+        for date in dates_pruned:
+            ssns.extend(isikukood.Isikukood(gender, date).construct(onums))
     ssns.sort()
     isikukood.assertions.assert_constructor_list(ssns)
 
