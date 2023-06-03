@@ -7,15 +7,31 @@ import isikukood.isikukood
 
 
 def ordernumber_from_ssn(ssn: str) -> int:
+    """Extract the order number from the given SSN.
+    """
+
     return int(ssn[7:10])
 
 
 def gender_from_ssn(ssn: str) -> str:
+    """Extract the gender from the given SSN.
+    :return: Either 'm' or 'f'.
+    :rtype: str
+    """
+
     if int(ssn[0]) % 2 == 0: return 'f'
     else: return 'm'
 
 
 def gender_marker(yyyy: int, gender: str) -> str:
+    """Find the suitable gender marker (first digit), given gender and year of birth.
+    :param yyyy: Year of birth.
+    :param gender: Either 'm' or 'f'.
+    :return: A number between 1 and 8 (inclusive).
+    :rtype: int
+    :raises ValueError: When either one of the arguments is invalid.
+    """
+
     try:
         isikukood.assertions.assert_year_range(yyyy)
         isikukood.assertions.assert_gender(gender)
@@ -36,10 +52,13 @@ def gender_marker(yyyy: int, gender: str) -> str:
 
 
 def birthdate_from_ssn(ssn: str) -> str:
+    """Find the birthdate, given an SSN.
+    :param ssn: Estonian SSN.
+    :type ssn: str
+    :return: Corresponding birthdate in ISO 8601 (yyyy-mm-dd).
+    :rtype: str
     """
-    :param ssn: Estonian SSN
-    :return: Corresponding birthdate in ISO 8601 (yyyy-mm-dd)
-    """
+
     try: isikukood.assertions.assert_first_digit(ssn)
     except AssertionError as e: raise ValueError(e)
 
@@ -61,16 +80,29 @@ def birthdate_from_ssn(ssn: str) -> str:
 
 
 def insert_checksum(ssn: str) -> str:
+    """
+    :param ssn: Estonian SSN, can be either 10 or 11 digits.
+    :type ssn: str
+    :return: The given SSN but with the 11th digit replaced with a newly calculated checksum.
+    :rtype: str
+    :raise ValueError: When the given SSN is not 10 or 11 digits in length.
+    """
+
+    try:
+        assert len(ssn) in [10, 11]
+    except AssertionError:
+        raise ValueError(f'Given SSN ({ssn}) is {len(ssn)} digits, expected 10 or 11')
+
     ssn = ssn[0:10]
     return ssn + str(calculate_checksum(ssn))
 
 
 def calculate_checksum(ssn: str) -> int:
-    """
-    Calculate the given SSN's checksum as per https://et.wikipedia.org/wiki/Isikukood#Kontrollnumber
-    :param ssn: Estonian SSN. May or may not contain the checksum digit already
-                (can be either 10 or 11 digits).
-    :return: Corresponding checksum
+    """Calculate the given SSN's checksum as per https://et.wikipedia.org/wiki/Isikukood#Kontrollnumber
+    :param ssn: Estonian SSN. May or may not already contain the checksum digit (can be either 10 or 11 digits).
+    :type ssn: str
+    :return: Corresponding checksum.
+    :rtype: int
     """
 
     try: isikukood.assertions.assert_numeric(ssn)
@@ -99,14 +131,22 @@ def calculate_checksum(ssn: str) -> int:
     else: return 0
 
 
-def enum(genders: List[str]=None, days: List[int]=None, months: List[int]=None, years: List[int]=None, onums: List[int]=None) -> List[str]:
-
-    """
-    :param genders: Either ['m'], ['f'], or ['m', 'f']
-    :param days: Days of the month, such as [5, 6, 7, 8, 9]
-    :param months: Months of the year, such as [9, 10, 11, 12]
-    :param years: Years, such as [2000, 2001, 2002]
-    :return: List of all valid Estonian SSNs with the given arguments
+def enum(genders: List[str]=None, days: List[int]=None, months: List[int]=None, years: List[int]=None,
+         onums: List[int]=None) -> List[str]:
+    """Generate all valid Estonian SSNs possible with the given arguments.
+    :param genders: A list in which each element is either 'm' or 'f'. Defaults to ['m', 'f'].
+    :type genders: List[str]
+    :param days: Days of the month, such as [5, 6, 7, 8, 9]. Defaults to [1; 31].
+    :type days: List[int]
+    :param months: Months of the year, such as [9, 10, 11, 12]. Defaults to [1; 12].
+    :type months: List[int]
+    :param years: Years, such as [2000, 2001, 2002]. Defaults to the current year.
+    :type years: List[int]
+    :param onums: Order numbers, such as [371, 372, ..., 420]. Defaults to [0; 999].
+    :type onums: List[int]
+    :return: List of SSNs.
+    :rtype: List[str]
+    :raises ValueError: When any of the given arguments is invalid.
     """
 
     if genders is None: genders = ['m', 'f']
