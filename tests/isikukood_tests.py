@@ -114,12 +114,15 @@ class FunctionsTestCase(unittest.TestCase):
 
     def test_insert_checksum(self):
         self.assertEqual(isikukood.functions.insert_checksum('5000101000x'), '50001010006')
+        self.assertEqual(isikukood.functions.insert_checksum('5000101000'), '50001010006')
+        self.assertRaises(ValueError, lambda: isikukood.functions.insert_checksum('500010100'))
 
     def test_enum(self):
         self.assertEqual(isikukood.functions.enum(genders=[]), [])
         self.assertEqual(isikukood.functions.enum(years=[]), [])
         self.assertEqual(isikukood.functions.enum(months=[]), [])
         self.assertEqual(isikukood.functions.enum(days=[]), [])
+        self.assertEqual(isikukood.functions.enum(onums=[]), [])
         self.assertEqual(isikukood.functions.enum(genders=['m'], days=[1], months=[2, 5, 4, 3, 4, 4, 6]),
                          isikukood.functions.enum(genders=['m'], days=[1], months=[6, 4, 5, 3, 2]))
         self.assertEqual(len(isikukood.functions.enum(years=[2000])), 732000)
