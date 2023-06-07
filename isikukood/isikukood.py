@@ -15,7 +15,9 @@ class Isikukood:
         """Instantiate the class from an already existing SSN.
 
         Examples:
+        ```python
             >>>isikukood.Isikukood('m', '2000-01-01')
+        ```
 
         Raises:
             ValueError: When the given SSN is invalid.
@@ -68,8 +70,10 @@ class Isikukood:
         """Generate all possible SSNs with the instance's gender and birthdate.
 
         Examples:
+        ```python
             >>>isikukood.Isikukood('m', '2000-01-01').construct()
             ['50001010006', '50001010017', '50001010028', ...]
+        ```
 
 
         Returns:
@@ -89,8 +93,10 @@ class Isikukood:
         """Generate an SSN with the instance's gender and birthdate and the order number that was given as an argument.
 
         Examples:
+        ```python
             >>>isikukood.Isikukood('m', '2000-01-01').construct(111)
             '50001011112'
+        ```
 
         Raises:
             ValueError: When the given order number is invalid.
@@ -111,8 +117,10 @@ class Isikukood:
         and with all the order numbers that were given as an argument.
 
         Examples:
+        ```python
             >>>isikukood.Isikukood('m', '2000-01-01').construct([111, 222, 333])
             ['50001011112', '50001012229', '50001013335']
+        ```
 
         Args:
             ordernumbers (List[int]): List of order numbers.

@@ -10,10 +10,12 @@ def ordernumber_from_ssn(ssn: str) -> int:
     """Extract the order number from the given SSN.
 
     Examples:
+    ```python
         >>>isikukood.ordernumber_from_ssn('50001010006')
         0
         >>>isikukood.ordernumber_from_ssn('50001010105')
         10
+    ```
     """
 
     return int(ssn[7:10])
@@ -23,13 +25,17 @@ def gender_from_ssn(ssn: str) -> str:
     """Extract the gender from the given SSN.
 
     Examples:
+     ```python
         >>>isikukood.gender_from_ssn('50001010006')
         'm'
         >>>isikukood.gender_from_ssn('60001010007')
         'f'
+    ```
 
     Returns:
         str: Either 'm' or 'f'.
+
+---
     """
 
     if int(ssn[0]) % 2 == 0: return 'f'
@@ -40,10 +46,12 @@ def gender_marker(yyyy: int, gender: str) -> str:
     """Find the suitable gender marker (first digit), given gender and year of birth.
 
     Examples:
+    ```python
         >>>isikukood.gender_marker(2000, 'm')
         '5'
         >>>isikukood.gender_marker(1999, 'm')
         '3'
+    ```
 
     Args:
         yyyy (int): Year of birth.
@@ -79,8 +87,10 @@ def birthdate_from_ssn(ssn: str) -> str:
     """Find the birthdate, given an SSN.
 
     Examples:
+    ```python
         >>>isikukood.birthdate_from_ssn('50001010006')
         '2000-01-01'
+    ```
 
     Args:
         ssn (str): Estonian SSN.
@@ -112,8 +122,10 @@ def birthdate_from_ssn(ssn: str) -> str:
 def insert_checksum(ssn: str) -> str:
     """
     Examples:
+    ```python
         >>>isikukood.insert_checksum('5000101000x')
         '50001010006'
+    ```
 
     Args:
         ssn (str): Estonian SSN, can be either 10 or 11 digits.
@@ -138,8 +150,10 @@ def calculate_checksum(ssn: str) -> int:
     """Calculate the given SSN's checksum as per https://et.wikipedia.org/wiki/Isikukood#Kontrollnumber
 
     Examples:
+    ```python
         >>>isikukood.calculate_checksum('5000101000')
         6
+    ```
 
     Args:
         ssn (str): Estonian SSN. May or may not already contain the checksum digit (can be either 10 or 11 digits).
@@ -179,8 +193,10 @@ def enum(genders: List[str]=None, days: List[int]=None, months: List[int]=None, 
     """Generate all valid Estonian SSNs possible with the given arguments.
 
     Examples:
+    ```python
         >>>isikukood.enum(days=[1], months=[1], years=[2000], onums=[0, 1, 2])
         ['50001010006', '50001010017', '50001010028', '60001010007', '60001010018', '60001010029']
+    ```
 
     Args:
         genders (List[str]): A list in which each element is either 'm' or 'f'. Defaults to ['m', 'f'].
