@@ -13,7 +13,12 @@ class Isikukood:
     @classmethod
     def from_ssn(cls, ssn: str):
         """Instantiate the class from an already existing SSN.
-        :raises ValueError: When the given SSN is invalid.
+
+        Examples:
+            >>>isikukood.Isikukood('m', '2000-01-01')
+
+        Raises:
+            ValueError: When the given SSN is invalid.
         """
 
         try: isikukood.assertions.assert_valid_ssn(ssn)
@@ -61,8 +66,14 @@ class Isikukood:
     @dispatch()
     def construct(self) -> List[str]:
         """Generate all possible SSNs with the instance's gender and birthdate.
-        :return: List of SSNs.
-        :rtype: List[str]
+
+        Examples:
+            >>>isikukood.Isikukood('m', '2000-01-01').construct()
+            ['50001010006', '50001010017', '50001010028', ...]
+
+
+        Returns:
+            List[str]: List of SSNs.
         """
 
         ret = []
@@ -76,7 +87,13 @@ class Isikukood:
     @dispatch(int)
     def construct(self, ordernumber: int) -> str:
         """Generate an SSN with the instance's gender and birthdate and the order number that was given as an argument.
-        :raises ValueError: When the given order number is invalid.
+
+        Examples:
+            >>>isikukood.Isikukood('m', '2000-01-01').construct(111)
+            '50001011112'
+
+        Raises:
+            ValueError: When the given order number is invalid.
         """
 
         try: isikukood.assertions.assert_ordernumber_range(ordernumber)
@@ -92,11 +109,19 @@ class Isikukood:
     def construct(self, ordernumbers: List[int]) -> List[str]:
         """Generate all possible SSNs with the instance's gender and birthdate
         and with all the order numbers that were given as an argument.
-        :param ordernumbers: List of order numbers.
-        :type ordernumbers: List[int]
-        :return: List of SSNs.
-        :rtype: List[str]
-        :raises ValueError: When any of the given order numbers is invalid.
+
+        Examples:
+            >>>isikukood.Isikukood('m', '2000-01-01').construct([111, 222, 333])
+            ['50001011112', '50001012229', '50001013335']
+
+        Args:
+            ordernumbers (List[int]): List of order numbers.
+
+        Returns:
+            List[str]: List of SSNs.
+
+        Raises:
+            ValueError: When any of the given order numbers is invalid.
         """
 
         ret = []
