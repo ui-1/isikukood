@@ -2,6 +2,13 @@
 
 Small Estonian social security number library (I know they're not really SSNs but I don't have a better English name for them)
 
+# Installation
+
+Simply run the following:
+```bash
+pip install isikukood
+```
+
 # Table of Contents
 
 * [functions](#functions)
