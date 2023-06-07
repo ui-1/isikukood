@@ -16,7 +16,7 @@ class Isikukood:
 
         Examples:
         ```python
-            >>>isikukood.Isikukood('m', '2000-01-01')
+            >>>isikukood.Isikukood.from_ssn('50001010006')
         ```
 
         Raises:
