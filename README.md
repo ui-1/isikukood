@@ -68,19 +68,17 @@ Extract the gender from the given SSN.
 
 **Examples**:
 
-     ```python
-        >>>isikukood.gender_from_ssn('50001010006')
-        'm'
-        >>>isikukood.gender_from_ssn('60001010007')
-        'f'
-    ```
+ ```python
+    >>>isikukood.gender_from_ssn('50001010006')
+    'm'
+    >>>isikukood.gender_from_ssn('60001010007')
+    'f'
+```
   
 
 **Returns**:
 
 - `str` - Either 'm' or 'f'.
-  
-  ---
 
 ---
 <a id="functions.gender_marker"></a>

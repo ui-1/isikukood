@@ -34,8 +34,6 @@ def gender_from_ssn(ssn: str) -> str:
 
     Returns:
         str: Either 'm' or 'f'.
-
----
     """
 
     if int(ssn[0]) % 2 == 0: return 'f'
