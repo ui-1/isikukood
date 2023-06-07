@@ -273,7 +273,7 @@ Instantiate the class from an already existing SSN.
 **Examples**:
 
 ```python
-    >>>isikukood.Isikukood('m', '2000-01-01')
+    >>>isikukood.Isikukood.from_ssn('50001010006')
 ```
   
 
