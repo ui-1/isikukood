@@ -8,6 +8,12 @@ import isikukood.isikukood
 
 def ordernumber_from_ssn(ssn: str) -> int:
     """Extract the order number from the given SSN.
+
+    Examples:
+        >>>isikukood.ordernumber_from_ssn('50001010006')
+        0
+        >>>isikukood.ordernumber_from_ssn('50001010105')
+        10
     """
 
     return int(ssn[7:10])
@@ -15,8 +21,15 @@ def ordernumber_from_ssn(ssn: str) -> int:
 
 def gender_from_ssn(ssn: str) -> str:
     """Extract the gender from the given SSN.
-    :return: Either 'm' or 'f'.
-    :rtype: str
+
+    Examples:
+        >>>isikukood.gender_from_ssn('50001010006')
+        'm'
+        >>>isikukood.gender_from_ssn('60001010007')
+        'f'
+
+    Returns:
+        str: Either 'm' or 'f'.
     """
 
     if int(ssn[0]) % 2 == 0: return 'f'
@@ -25,11 +38,22 @@ def gender_from_ssn(ssn: str) -> str:
 
 def gender_marker(yyyy: int, gender: str) -> str:
     """Find the suitable gender marker (first digit), given gender and year of birth.
-    :param yyyy: Year of birth.
-    :param gender: Either 'm' or 'f'.
-    :return: A number between 1 and 8 (inclusive).
-    :rtype: int
-    :raises ValueError: When either one of the arguments is invalid.
+
+    Examples:
+        >>>isikukood.gender_marker(2000, 'm')
+        '5'
+        >>>isikukood.gender_marker(1999, 'm')
+        '3'
+
+    Args:
+        yyyy (int): Year of birth.
+        gender (str): Either 'm' or 'f'.
+
+    Returns:
+        int: A number between 1 and 8 (inclusive).
+
+    Raises:
+        ValueError: When either one of the arguments is invalid.
     """
 
     try:
@@ -53,10 +77,16 @@ def gender_marker(yyyy: int, gender: str) -> str:
 
 def birthdate_from_ssn(ssn: str) -> str:
     """Find the birthdate, given an SSN.
-    :param ssn: Estonian SSN.
-    :type ssn: str
-    :return: Corresponding birthdate in ISO 8601 (yyyy-mm-dd).
-    :rtype: str
+
+    Examples:
+        >>>isikukood.birthdate_from_ssn('50001010006')
+        '2000-01-01'
+
+    Args:
+        ssn (str): Estonian SSN.
+
+    Returns:
+        str: Corresponding birthdate in ISO 8601 (yyyy-mm-dd).
     """
 
     try: isikukood.assertions.assert_first_digit(ssn)
@@ -81,11 +111,18 @@ def birthdate_from_ssn(ssn: str) -> str:
 
 def insert_checksum(ssn: str) -> str:
     """
-    :param ssn: Estonian SSN, can be either 10 or 11 digits.
-    :type ssn: str
-    :return: The given SSN but with the 11th digit replaced with a newly calculated checksum.
-    :rtype: str
-    :raise ValueError: When the given SSN is not 10 or 11 digits in length.
+    Examples:
+        >>>isikukood.insert_checksum('5000101000x')
+        '50001010006'
+
+    Args:
+        ssn (str): Estonian SSN, can be either 10 or 11 digits.
+
+    Returns:
+        str: The given SSN but with the 11th digit replaced with a newly calculated checksum.
+
+    Raises:
+        ValueError: When the given SSN is not 10 or 11 digits in length.
     """
 
     try:
@@ -99,10 +136,16 @@ def insert_checksum(ssn: str) -> str:
 
 def calculate_checksum(ssn: str) -> int:
     """Calculate the given SSN's checksum as per https://et.wikipedia.org/wiki/Isikukood#Kontrollnumber
-    :param ssn: Estonian SSN. May or may not already contain the checksum digit (can be either 10 or 11 digits).
-    :type ssn: str
-    :return: Corresponding checksum.
-    :rtype: int
+
+    Examples:
+        >>>isikukood.calculate_checksum('5000101000')
+        6
+
+    Args:
+        ssn (str): Estonian SSN. May or may not already contain the checksum digit (can be either 10 or 11 digits).
+
+    Returns:
+        int: Corresponding checksum.
     """
 
     try: isikukood.assertions.assert_numeric(ssn)
@@ -134,19 +177,23 @@ def calculate_checksum(ssn: str) -> int:
 def enum(genders: List[str]=None, days: List[int]=None, months: List[int]=None, years: List[int]=None,
          onums: List[int]=None) -> List[str]:
     """Generate all valid Estonian SSNs possible with the given arguments.
-    :param genders: A list in which each element is either 'm' or 'f'. Defaults to ['m', 'f'].
-    :type genders: List[str]
-    :param days: Days of the month, such as [5, 6, 7, 8, 9]. Defaults to [1; 31].
-    :type days: List[int]
-    :param months: Months of the year, such as [9, 10, 11, 12]. Defaults to [1; 12].
-    :type months: List[int]
-    :param years: Years, such as [2000, 2001, 2002]. Defaults to the current year.
-    :type years: List[int]
-    :param onums: Order numbers, such as [371, 372, ..., 420]. Defaults to [0; 999].
-    :type onums: List[int]
-    :return: List of SSNs.
-    :rtype: List[str]
-    :raises ValueError: When any of the given arguments is invalid.
+
+    Examples:
+        >>>isikukood.enum(days=[1], months=[1], years=[2000], onums=[0, 1, 2])
+        ['50001010006', '50001010017', '50001010028', '60001010007', '60001010018', '60001010029']
+
+    Args:
+        genders (List[str]): A list in which each element is either 'm' or 'f'. Defaults to ['m', 'f'].
+        days (List[int]): Days of the month, such as [5, 6, 7, 8, 9]. Defaults to [1; 31].
+        months (List[int]): Months of the year, such as [9, 10, 11, 12]. Defaults to [1; 12].
+        years (List[int]): Years, such as [2000, 2001, 2002]. Defaults to the current year.
+        onums (List[int]): Order numbers, such as [371, 372, ..., 420]. Defaults to [0; 999].
+
+    Returns:
+        List[str]: List of SSNs.
+
+    Raises:
+        ValueError: When any of the given arguments is invalid.
     """
 
     if genders is None: genders = ['m', 'f']

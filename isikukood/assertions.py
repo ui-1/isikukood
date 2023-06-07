@@ -7,7 +7,9 @@ import isikukood.errors
 
 def assert_ordernumber_range(ordernumber: int) -> None:
     """Assert that the given argument is between 0 and 999 (inclusive).
-    :raises AssertionError: When the assertion fails.
+
+    Raises:
+        AssertionError: When the assertion fails.
     """
 
     try:
@@ -18,7 +20,9 @@ def assert_ordernumber_range(ordernumber: int) -> None:
 
 def assert_numeric(arg: str) -> None:
     """Assert that the given argument is numeric.
-    :raises AssertionError: When the assertion fails.
+
+    Raises:
+        AssertionError: When the assertion fails.
     """
 
     try:
@@ -29,7 +33,9 @@ def assert_numeric(arg: str) -> None:
 
 def assert_gender(gender: str) -> None:
     """Assert that the given argument is either 'm' or 'f'.
-    :raises AssertionError: When the assertion fails.
+
+    Raises:
+        AssertionError: When the assertion fails.
     """
 
     try:
@@ -40,7 +46,9 @@ def assert_gender(gender: str) -> None:
 
 def assert_first_digit(ssn: str) -> None:
     """Assert that the first character of the given argument is between 1 and 8 (inclusive).
-    :raises AssertionError: When the assertion fails.
+
+    Raises:
+        AssertionError: When the assertion fails.
     """
 
     try:
@@ -51,7 +59,9 @@ def assert_first_digit(ssn: str) -> None:
 
 def assert_year_range(yyyy: int) -> None:
     """Assert that the given argument is between 1800 and 2199 (inclusive).
-    :raises AssertionError: When the assertion fails.
+
+    Raises:
+        AssertionError: When the assertion fails.
     """
 
     try:
@@ -62,9 +72,12 @@ def assert_year_range(yyyy: int) -> None:
 
 def assert_existing_date(date: str) -> None:
     """Assert that the given date exists (no February 29th on non-leap years, no April 31st, etc.).
-    :param date: Date in ISO 8601 (YYYY-MM-DD).
-    :type date: str
-    :raises AssertionError: When the assertion fails.
+
+    Args:
+        date (str): Date in ISO 8601 (YYYY-MM-DD).
+
+    Raises:
+        AssertionError: When the assertion fails.
     """
 
     try:
@@ -76,9 +89,12 @@ def assert_existing_date(date: str) -> None:
 def assert_constructor_list(ssns: List[str]) -> None:
     """Sanity check called by SSN constructors.
     Asserts that the given argument contains no duplicates and that every one of its elements is a valid Estonian SSN.
-    :param ssns: List of SSNs coming from Isikukood.construct().
-    :type ssns: List[str]
-    :raises AssertionError: When any of the assertions fail.
+
+    Args:
+        ssns (List[str]): List of SSNs coming from Isikukood.construct().
+
+    Raises:
+        AssertionError: When any of the assertions fail.
     """
 
     try:
@@ -99,7 +115,9 @@ def assert_valid_ssn(ssn: str) -> None:
      * that the checksum is correct
      * that the birthdate exists
      * that the year of birth is between 1800 and 2199 (inclusive)
-    :raises AssertionError: When any of the assertions fail.
+
+    Raises:
+        AssertionError: When any of the assertions fail.
     """
 
     assert_numeric(ssn)
@@ -121,7 +139,9 @@ def assert_valid_ssn(ssn: str) -> None:
 
 def assert_correct_checksum(ssn: str) -> None:
     """Assert that the given SSN's checksum is correct.
-    :raises AssertionError: When the assertion fails.
+
+    Raises:
+        AssertionError: When the assertion fails.
     """
 
     expected_checksum = isikukood.functions.calculate_checksum(ssn)
@@ -137,7 +157,9 @@ def assert_enum_arguments(genders: List[str], days: List[int], months: List[int]
      * that every element in days is between 1 and 31 (inclusive)
      * that every element in months is between 1 and 12 (inclusive)
      * that every element in years is between 1800 and 2199 (inclusive)
-     :raises AssertionError: When any of the assertions fail.
+
+     Raises:
+         AssertionError: When any of the assertions fail.
     """
     try:
         for g in genders: assert g == 'm' or g == 'f'
