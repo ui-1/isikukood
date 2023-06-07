@@ -1,4 +1,4 @@
-from multipledispatch import dispatch
+from multimethod import multimethod
 from typing import List
 
 import isikukood.functions
@@ -63,7 +63,7 @@ class Isikukood:
         base = gm + xxyy + mm + dd + "{0:03}".format(ordernumber)
         return base + str(isikukood.functions.calculate_checksum(base))
 
-    @dispatch()
+    @multimethod
     def construct(self) -> List[str]:
         """Generate all possible SSNs with the instance's gender and birthdate.
 
@@ -84,7 +84,7 @@ class Isikukood:
 
         return ret
 
-    @dispatch(int)
+    @multimethod
     def construct(self, ordernumber: int) -> str:
         """Generate an SSN with the instance's gender and birthdate and the order number that was given as an argument.
 
@@ -105,7 +105,7 @@ class Isikukood:
 
         return ssn
 
-    @dispatch(list)
+    @multimethod
     def construct(self, ordernumbers: List[int]) -> List[str]:
         """Generate all possible SSNs with the instance's gender and birthdate
         and with all the order numbers that were given as an argument.

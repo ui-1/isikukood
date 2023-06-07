@@ -30,5 +30,5 @@ setup(
     ],
     packages=["isikukood"],
     include_package_data=True,
-    install_requires=["multipledispatch"]
+    install_requires=["multimethod"]
 )
