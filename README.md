@@ -1,5 +1,8 @@
 # Isikukood
 
+![GitHub](https://img.shields.io/github/license/ui-1/isikukood)
+![PyPI](https://img.shields.io/pypi/v/isikukood)
+
 Small Estonian social security number library (I know they're not really SSNs but I don't have a better English name for them)
 
 # Installation
